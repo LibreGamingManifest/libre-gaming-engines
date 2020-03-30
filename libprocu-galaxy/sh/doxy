@@ -1,0 +1,46 @@
+#!/bin/sh
+#====================================
+# @file   : doxy
+# @version: 2020-03-22
+# @created: 2018-08-08
+# @purpose: create doxygen documentation from src dir
+# @usage  : ./doxy
+# @param  : source files are in ./src/lib
+# @param  : output files are in ./doc
+#====================================
+
+
+
+#----------------------------------
+# define
+#----------------------------------
+
+# generate config file
+#doxygen -g ./doc/doxygen-procu.cfg
+
+
+#----------------------------------
+# run
+#----------------------------------
+echo "running doxygen ..."
+
+SRCPATH=src/
+TGTTITLE=libprocu-galaxy-api
+
+
+
+cd $SRCPATH
+doxygen ../doc/doxygen-procu.cfg
+
+cd ..
+
+# convert to pdf
+cd doc/latex
+make pdf
+cd ../..
+
+mkdir doc/pdf
+# copy pdf
+cp -rp doc/latex/refman.pdf doc/pdf/$TGTTITLE.pdf
+
+echo "finished doxygen ..."

@@ -1,0 +1,65 @@
+#!/bin/sh
+#====================================
+# @file   : makelib
+# @version: 2020-03-22
+# @created: 2018-07-19
+# @purpose: will compile *.cpp into a shared library
+# @usage  : sh/makelib
+# @param  : source files are in ./src
+# @param  : output files are in ./build
+#====================================
+
+
+#----------------------------------
+# define
+#----------------------------------
+
+LIBNAME=libprocustellar
+BUILDPATH=build
+INCLUDESPATH=include
+SRCPATH=../src
+
+#----------------------------------
+# compile
+#----------------------------------
+
+pwd
+mkdir $BUILDPATH/
+cd $BUILDPATH/
+pwd
+
+# quick compile
+#g++ -Wall -std=c++17 -fPIC -c $SRCPATH/core/*.cpp
+# don't compile header files $SRCPATH/libprocu.hpp
+#g++ -shared -Wl,-soname,$LIBNAME.so -o $LIBNAME.so *.o -Wl,--gc-sections -Wl,--strip-all
+
+# compile optimized
+g++ -Wall -std=c++17 -O4 -Os -s -fdata-sections -ffunction-sections -fPIC -c $SRCPATH/core/*.cpp
+# don't compile header files $SRCPATH/libprocu.hpp
+g++ -shared -Wl,-soname,$LIBNAME.so -o $LIBNAME.so *.o -Wl,--gc-sections -Wl,--strip-all
+# needed: --disable-libstdcxx-dual-abi 
+
+# compile as static lib
+ar rcs libprocustellar.a *.o
+
+
+#----------------------------------
+# finalize
+#----------------------------------
+
+ls -l
+cd ..
+
+# stat the shared library file
+file build/$LIBNAME.so
+
+# copy headers to include dir
+#cp -rp src/*.hpp include/
+# copy recursive with wildcard
+#mkdir $INCLUDESPATH
+#find src/ -type f -name "*.hpp" -exec cp -rp {} $INCLUDESPATH/ \;
+
+# clean up
+#rm src/*.gch
+
+
