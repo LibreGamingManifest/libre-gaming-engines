@@ -1,6 +1,6 @@
 ```markdown
 # @file   : README.md
-# @version: 2020-03-22
+# @version: 2020-05-21
 # @created: 2020-02-01
 # @author : pyramid
 # @purpose: documentation for libprocu-galaxy
@@ -36,7 +36,7 @@ The API is documented in *doc/libprocu-galaxy-api.pdf*. Run the *sh/doxy* script
 **Code License**
 =====================================
 
-The source code of this libprocu-galaxy library is pubished under  [The GNU General Public License version 3 or later](https://www.gnu.org/licenses/gpl.html)([https://www.gnu.org/licenses/gpl.html](https://www.gnu.org/licenses/gpl.html)).
+The source code of this libprocu-galaxy library is published under  [The GNU General Public License version 3 or later](https://www.gnu.org/licenses/gpl.html)([https://www.gnu.org/licenses/gpl.html](https://www.gnu.org/licenses/gpl.html)).
 
 
 
@@ -55,6 +55,8 @@ The source code of this libprocu-galaxy library is pubished under  [The GNU Gene
 LibProcU::Galaxy is a single-header library for cosmic galaxy objects.
 
 It is a comprehensive library for procedural galaxy generation including stellar systems, stars, and planets.
+
+LibProcU stands for **Proc**edural **U**niverse **Lib**rary.
 
 
 

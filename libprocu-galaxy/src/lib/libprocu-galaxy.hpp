@@ -1,6 +1,6 @@
 //===================================
 // @file   : libprocu-galaxy.hpp
-// @version: 2020-03-22
+// @version: 2020-05-21
 // @created: 2020-02-01
 // @author : pyramid
 // @brief  : library for procedural galaxy generation
@@ -164,7 +164,7 @@
 
 
 //-----------------------------------
-// includes: standard libraries
+// includes: external libraries
 //-----------------------------------
 
 // include pcg random library

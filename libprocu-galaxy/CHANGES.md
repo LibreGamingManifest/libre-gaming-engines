@@ -1,22 +1,31 @@
+```markdown
 #====================================
 # @file   : libprocu-galaxy/CHANGES.md
-# @version: 2020-03-22
+# @version: 2020-05-21
 # @created: 2020-02-01
 # @author : pyramid
-# @purpose: version documentation for libProcUGalaxy
+# @purpose: version documentation for libprocu-galaxy
 #====================================
+```
 
 
 
 =====================================
-# libProcUGalaxy
+# libProcU::Galaxy
 =====================================
 
 =====================================
 ## version history
 =====================================
 
+v0.00.29 | 2020-05-21
+
+- libprocu-galaxy: minor documentation changes
+- README: minor documentation changes
+- CHANGES: minor documentation changes
+
 v0.00.28 | 2020-03-22
+
 - doc: updated readme
 - lib added json serializer for planet
 - lib: updated comments
