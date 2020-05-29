@@ -1,0 +1,87 @@
+{ "type": "dialogue",
+  "id": "0",
+  "name": "Sample Dialogue",
+  "version": "1.202005.29",
+  "nodes": [
+    { "id": "1",
+      "type": "node-init",
+      "actor": "Narrator",
+      "next-node-id": "end",
+      "components": [
+        { "type": "component-text",
+          "text": "The Aera have invaded the Union of Dispossessed Settlers seeking to carve a path through human space to the coreward regions of the jump network." },
+        { "type": "component-text",
+          "text": "You are Deucalion, a human raised by the Klk’k on Ktah, who just got his ship repaired after an emergency landing on Cephid 17 caused by a Luddite attack that cost hist best friend Lauktk his life." },
+        { "type": "component-text",
+          "text": "You find yourself in the bar on the orbital station above Cephid 17 talking with Jenek, a ship dealer." },
+        { "type": "component-text",
+          "text": "[Jenek] Ahh, that's right. You're here about the jump drive!",
+          "next-node-id": "3" }
+      ]
+    },
+
+    { "id": "7",
+      "type": "node",
+      "components": [
+        { "type": "component-text",
+          "text": "So you're interested in the jump drive now?",
+          "next-node-id": "3" }
+      ]
+    },
+
+    { "id": "3",
+      "type": "node",
+      "components": [
+        { "type": "component-selection",
+          "items": [
+            { "text": "Yeah, I'm interested.",
+              "next-node-id": "4",
+              "sequence": 2 },
+            { "text": "Depends ...",
+              "next-node-id": "5",
+              "sequence": 1 },
+            { "text": "That's not what I'm here about.",
+              "next-node-id": "6",
+              "sequence": 3 }
+          ]
+        }
+      ]
+    },
+
+    { "id": "4",
+      "type": "node",
+      "components": [
+        { "type": "component-text",
+          "text": "Here you go. It's being installed as we speak.\nWell, what are you waiting for? Go and give it a spin!",
+          "next-node-id": "end" }
+      ]
+    },
+
+    { "id": "5",
+      "type": "node",
+      "components": [
+        { "type": "component-text",
+          "text": "I see ... Let me give you a very special price.",
+          "next-node-id": "7" }
+      ]
+    },
+
+    { "id": "6",
+      "type": "node",
+      "components": [
+        { "type": "component-text",
+          "text": "Dammit. I knew there would be no business to be done on this day!",
+          "next-node-id": "end" }
+      ]
+    },
+
+
+    { "id": "end",
+      "type": "node-exit",
+      "components": [
+        { "type": "component-text",
+          "text": "Thank you and good bye o/" }
+      ]
+    }
+  ]
+}

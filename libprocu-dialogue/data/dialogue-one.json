@@ -1,0 +1,45 @@
+
+    { "type": "dialogue",
+      "id": "0",
+      "name": "Minimal Dialogue",
+      "version": "1.20200525",
+      "uuid": "CA66C1494A5208F97F7B908C24F9A8A6",
+      "nodes": [
+        { "comment": "___node___",
+          "id": "1",
+          "type": "node-init",
+          "uuid": "CA66C1494A5208F97F7B908C24F91234",
+          "actor": "NPC",
+          "components": [
+            { "type": "component-text",
+              "uuid": "CA66C1494A5208F97F7B908C24F99876",
+              "text": "Please select one answer."
+            },
+            { "type": "component-selection",
+              "uuid": "CA66C1494A5208F97F7B908C24F91111",
+              "items": [
+                { "text": "Answer 1",
+                  "next-node-id": "2"
+                },
+                { "text": "Answer 2",
+                  "next-node-id": "2"
+                },
+                { "text": "Answer 3",
+                  "next-node-id": "2"
+                }
+              ]
+            }
+          ]
+        },
+        { "comment": "___node___",
+          "id": "2",
+          "type": "node-exit",
+          "components": [
+            { "type": "component-reward",
+              "text": "Please select one answer."
+            }
+          ]
+        }
+      ]
+    }
+

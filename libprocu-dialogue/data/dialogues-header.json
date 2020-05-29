@@ -1,0 +1,20 @@
+{ "dialogues": [
+    { "type": "dialogue",
+      "uuid": "CA66C1494A5208F97F7B908C24F9A8A6",
+      "name": "Minimal Dialogue",
+      "version": "1.20200525",
+      "nodes": [
+        { "type": "node-init",
+          "uuid": "CA66C1494A5208F97F7B908C24F91234",
+          "components": [
+            { "type": "component-text",
+              "uuid": "CA66C1494A5208F97F7B908C24F99876",
+            }
+          ]
+
+        }
+      ]
+    }
+
+  ]
+}

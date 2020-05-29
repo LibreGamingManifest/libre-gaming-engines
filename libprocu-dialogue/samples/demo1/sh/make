@@ -1,0 +1,138 @@
+#!/bin/sh
+#====================================
+# @file   : make
+# @version: 2020-05-23
+# @created: 2018-07-19
+# @brief  : will compile input.cpp to a cli app
+# @usage  : ./make $param
+# @param none: optimized compile
+# @param -q: quick compile with debug symbols
+#====================================
+
+
+#====================================
+# build library first
+#====================================
+
+LOCDIR=$(pwd)
+#echo "LOCDIR=$LOCDIR"
+
+# build the lib
+#sh/makelib
+#cd $LOCDIR
+
+
+#====================================
+# define
+#====================================
+
+BUILDPATH=build/
+BINPATH=bin/
+OUTFILE=dialogue-demo1
+INFILE=../src/$OUTFILE.cpp
+INCLUDEPATH=../src/
+#LIBFILE=procu-galaxy
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILDPATH
+export LIBRARY_PATH=$BUILDPATH
+export CXX_INCLUDE_PATH=$INCLUDEPATH
+
+#====================================
+# validate parameters
+#====================================
+
+if [ $# -eq 0 ]
+then
+  #echo "No arguments supplied"
+  COMMAND="-O4 -Os -save-temps"
+  #echo "setting infile to $INFILE"
+fi
+
+if [ $# -gt 0 ]
+then
+  #INFILE=$1
+  COMMAND=-g
+fi
+
+
+#====================================
+# main script
+#====================================
+
+# --- create directories
+mkdir $BINPATH 2>/dev/null
+mkdir $BUILDPATH 2>/dev/null
+echo "entering build dir..."
+cd $BUILDPATH
+
+# --- backup previous program
+#rm $OUTFILE.bak 2> /dev/null
+#mv $OUTFILE $OUTFILE.bak 2> /dev/null
+
+# compile including path to library
+# -L is used for the linker
+# -I is for .hpp includes
+# -rpath embeds the path (via the linker) for the loader.
+
+# build without library
+#g++ -Wall -std=c++17 $COMMAND -o bin/$OUTFILE $INFILE -pthread
+
+# build file (character) with ext includes without lib
+#OUTFILE=character
+#INFILE=../src/$OUTFILE.cpp
+#g++ -Wall -O3 -std=c++17 $COMMAND -pthread -I$INCLUDEPATH -I../src/ext $INFILE -o ../bin/$OUTFILE 
+
+# build file (character) with ext and lib includes
+#OUTFILE=character
+INFILE=../src/$OUTFILE.cpp
+g++ -Wall -O3 -std=c++17 $COMMAND -pthread -I$INCLUDEPATH -I../src/ext/ $INFILE ../src/lib/*.hpp -o ../bin/$OUTFILE 
+
+
+# OpenGL build file  (...) with ext hpp includes
+#OUTFILE=showgalaxy
+#INFILE=../src/$OUTFILE.cpp
+#g++ -Wall -O3 -std=c++17 $COMMAND -pthread -lGL -lGLU -lglut -I$INCLUDEPATH -I../src/ext/ $INFILE ../src/lib/libprocu-galaxy.hpp -o ../bin/$OUTFILE 
+
+# build file with several include paths
+#g++ -Wall -std=c++17 $COMMAND -Wl,-rpath=./ -fPIC -I./ -Isrc/ext/pcg32/ -o bin/$OUTFILE src/*.h src/*.hpp $INFILE -pthread -L./
+
+# build as dynamically linked file
+#echo "--- compiling dynamically linked binary ..."
+#echo "compile command:"
+#echo "g++ -Wall -std=c++17 $COMMAND -s -Wl,-rpath=$LIBRARY_PATH -L$LIBRARY_PATH -I$INCLUDEPATH -o $BUILDPATH/$OUTFILE-dynamic $INFILE -pthread -l$LIBFILE"
+#g++ -Wall -std=c++17 $COMMAND -s -Wl,-rpath=$LIBRARY_PATH -L$LIBRARY_PATH -I$INCLUDEPATH -o bin/$OUTFILE-dynamic $INFILE -pthread -l$LIBFILE
+#clang++ -Wall -std=c++17 $COMMAND -s -Wl,-rpath=$LIBRARY_PATH -L$LIBRARY_PATH -I$INCLUDEPATH -o $OUTFILE $INFILE -pthread -lprocu
+
+# build static (budled with static library as one file)
+#echo "--- compiling static binary ..."
+#echo "compile command:"
+#echo "..."
+#g++ -Wall -std=c++17 $COMMAND -o bin/$OUTFILE $INFILE $BUILDPATH/lib$LIBFILE.a -pthread
+
+
+#====================================
+# clean temp files
+#====================================
+
+echo $(pwd)
+rm $OUTFILE.* 2> /dev/null
+rm -r *.ii 2> /dev/null
+rm -r *.s 2> /dev/null
+
+
+#====================================
+# run
+#====================================
+
+# export display to X server (for Windows Subsystem for Linux)
+#export DISPLAY=:0
+
+# show OpenGL glxinfo
+#glxinfo | grep OpenGL
+
+# and execute compiled program
+echo "running $OUTFILE..."
+#echo "run manually with LD_LIBRARY_PATH=build/ ./$OUTFILE"
+# run with: LD_LIBRARY_PATH=build bin/genstellar-dynamic
+cd $LOCDIR
+bin/$OUTFILE
