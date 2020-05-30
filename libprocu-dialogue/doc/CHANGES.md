@@ -24,6 +24,15 @@
 # version history
 =====================================
 
+v0.202005.30
+
+- added dialogue demo 2
+- lib: added getRandomItem
+- lib: added getItemFromSequence
+- lib: added execComponentTextActor
+
+
+
 v0.202005.29
 
 - lib: auto assign sequence if none given
@@ -32,7 +41,7 @@ v0.202005.29
 
 v0.202005.28
 
-- standard: added component-next
+- spec: added component-next
 - dialogue.json: added more nodes
 - dialogue: sample dialogue demo 1
 - lib: added config option LIBDIALOGUE_COUT_ERROR

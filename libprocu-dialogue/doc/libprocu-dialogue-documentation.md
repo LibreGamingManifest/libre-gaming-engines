@@ -59,7 +59,7 @@ Further, it should allow to contain not only implementation or usage specific in
 
 We are aiming at providing a library with the **standard data model** as outlined in the [**Dialogue Standard Exchange Format**](#dialogue-standard-exchange-format). This is a community work in progress and part of the [**Libre Gaming Manifest**](https://github.com/LibreGamingManifest), a larger effort aiming at enabling creative and community oriented collaborators to create interesting games by providing the necessary libre tools to do so.
 
-This library is in development whenever a community member requires change of existing functionality. Some standard functions are implemented so that you are able to quickly implement dialogue into your application. Simple [**sample applications***](#sample-applications) are bundled with the library code.
+This library is in development whenever a community member requires change of existing functionality. Some standard functions are implemented so that you are able to quickly implement dialogue into your application. Simple [**sample applications**](#sample-applications) are bundled with the library code.
 
 When writing the code we are trying to avoid high-performant code in favor of understandable code. Code lines are usually generously commented so that the learning curve effort is reduced to a bare minimum.
 
@@ -71,42 +71,60 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 
 
-### Feature requests
+### Implemented Features
 
-- Engine agnostic international standard format
-- A sample C++ library
-- Dynamic branched conversations with multiple choices.
+- Engine agnostic international [standard format specification](https://github.com/LibreGamingManifest/libre-gaming-engines/blob/master/libprocu-dialogue/doc/dialogue-exchange-system-specification.md).
+- Fully open source (FDL for specification, GPL for code).
+- A simple one-header C++ library (*libprocu-dialogue*)
+- Well-documented (specification document, library documentation, source code comments, commented samples).
+- Branched conversations (next node) with multiple choices (*component-selection*).
+- Non-linear conversations, such as looping backwards in the conversation to a previous dialogue node (*next-node-id*).
+- Common node types: start (*node-init*), end (*node-exit*), normal connected node (*node*) .
+- Associate nodes to actors (with the *actor* element). As such multiple actor conversations are supported in one dialogue structure.
+- Random components (*component-random*) that will randomly select the next node.
+- Library support for release mode and experimental mode (via library options, e.g. LIBDIALOGUE_COUT_ERROR).
+
+
+
+### Features Specified in the Standard But Not Yet Implemented
+
+- Localization support (with the locale element).
+- Text styling format definition to allow your application extract and apply styles.
+
+
+
+### Features That Are Not Standardized and Should Be Implemented In Client Applications
+
+- 
+
+
+
+### Feature Requests
+
+- 
+- Selection hints
+- Node groups
+- Questions and question groups
+- Dynamic conversations (based on input parameters)
 - Complex conditions or logic without scripting
-- Multiple actor conversations
+- Text color, formatting, styling per types or individual nodes
+- Media decorators
+- Animation decorators (tasks, emotes, expressions)
+- Hover image, text, audio, any media
 - Triggers
 - Conditions (variable, or named)
 - Multiple synchronous dialogue media (text, image, audio, camera)
 - Behavior trees
-- Multiple selections
-- Selection hints
 - Mood hints (e.g. for voice acting)
-- Dialogue media arguments
-
-- Many node types: start, end, media, random nodes
-- Questions and question groups
+- Dialogue media file arguments
 - Tasks (show text, wait for answer, move camera, close dialog, next node)
 - Local and Global variables
 - Custom event and event call nodes
-- Retargetable Dialogue Graphs
-
-- no localization
-- associate dialogue to actor component
-- camera information
-- text color, formatting, styling per types or individual nodes
-- media decorators
-- animation decorators (tasks, emotes, expressions)
-- hover image, text, audio, any media
-- node groups
-- tag to allow for waiting/pausing during dialogue
+- Retargettable Dialogue Graphs
+- Camera control information
 - Some sort of OnStart, OnFinish optional action
--  **variables with scope**, either local to a single script or global between all scripts
-- Support for normal mode and Experimental Mode
-- Allows non-linear conversations, such as looping backwards in the conversation to a previous dialogue node
+-  Tag to allow for forcing waiting/pausing during dialogue
+-  **Variables with scope**, either local to a single script or global between all scripts
 - Allows conditional flow in conversations, giving you the power to script functions that determine the availability of responses
 - Implements a way for NPCs to have different responses based on  different conditions, allowing them to greet you differently or say  different things
 - Has a system to dynamically replace text in the dialogue by  utilizing a table of DynamicTextFunctions (which you can write your own  functions for). Now NPCs can greet you by name!
@@ -115,7 +133,8 @@ When writing the code we are trying to avoid high-performant code in favor of un
 - Has an abstract interface, allowing you to customize the look and behavior of the client-side however you like
 - Comes with a default interface, redesigning a classic Roblox look and allowing you to jump start projects
 - Allows NPC phrases to be chained into one another for such a purpose as a “next” button like in Zelda where text is split between multiple  boxes
-- Fully open source and well-documented
+- Possibility for breaking off an unfinished conversation (client?)
+- Possibility to convert from other formats (Twine, Ink, DlgSystem, ...)
 
 
 
@@ -127,7 +146,7 @@ When writing the code we are trying to avoid high-performant code in favor of un
 | ------------------------------------- | ------------------------------------------------------------ |
 | bool LIBDIALOGUE_SORT_SEQUENCE = true | Items will be sorted automatically by sequence when imported. This should avoid an additional step if the order of selections is important. |
 | uint LIBDIALOGUE_JSON_INDENT = 4      | Default indent in space characters.                          |
-|                                       |                                                              |
+| bool LIBDIALOGUE_COUT_ERROR           | We can show the error text before throwing the error, so if you don't catch it and segfault, you at least know where. |
 
 
 
@@ -230,7 +249,6 @@ The complexity mainly depends on the number of nodes to be included.
 Sample applications match program and data name, for example
 
 - [*src/dialogue.cpp*](src/dialogue.cpp) together with [*data/dialogue.json*](data/dialogue.json)  implement a very simple branching dialogue with Q&A and different answer selections as well as recursive dialogue invocation.
-
 
 ------
 

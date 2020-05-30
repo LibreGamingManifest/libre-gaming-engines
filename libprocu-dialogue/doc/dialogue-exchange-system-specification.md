@@ -1,6 +1,6 @@
 ```markdown
 # @file   : dialogue-exchange-system-specification.md
-# @version: 2020-05-29
+# @version: 2020-05-30
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: specification document for libprocu-dialogue exchange system
@@ -148,17 +148,11 @@ Many **structures** have the following **mandatory** keys:
 **Optional** generic entries that may be present in some structures:
 
 
-| key            | description                                                  | type                              |
-| -------------- | ------------------------------------------------------------ | --------------------------------- |
-| ```id```       | per dialogue unique node identifier; not available in components | string                            |
-| ```uuid```     | universally unique identifier might be useful for large projects | 128 bit hex<br/>as 32 char string |
-| ```name```     | human readable name                                          | string                            |
-| ```version```  | version number                                               | string                            |
-| ```created```  | date and (optional) time                                     | ISO 8601 format string            |
-| ```comment```  | human readable comment for the data structure                | string                            |
-| ```sequence``` | used to sort elements or components                          | uint                              |
-
-
+| key           | description                                                  | type                              |
+| ------------- | ------------------------------------------------------------ | --------------------------------- |
+| ```id```      | per dialogue unique node identifier; not available in components | string                            |
+| ```uuid```    | universally unique identifier might be useful for large projects | 128 bit hex<br/>as 32 char string |
+| ```comment``` | human readable comment for the data structure                | string                            |
 
 This generic data may be present in any of the objects or components, so that in some cases we won't repeat those entries for the definitions included further in this document.
 
@@ -187,6 +181,45 @@ Some examples
 "type": "node-question"
 "type": "component-speech"
 ```
+
+
+
+### comment
+
+Comments can help recognize where a new structure in a serialized file begins or ends. They are not used for any processing. Example of a comment entry:
+
+```json
+"nodes": [
+    { "comment": "___node___" }
+]
+```
+
+
+
+
+
+
+
+## Dialogue Header
+
+Mandatory header type is
+
+| key        | enumeration | type   |
+| ---------- | ----------- | ------ |
+| ```type``` | dialogue    | string |
+
+
+
+**Optional** generic entries that may be present in the header:
+
+| key                | description                                      | type                   |
+| ------------------ | ------------------------------------------------ | ---------------------- |
+| ```type```         | dialogue - the main type of this standard        | string                 |
+| ```name```         | human readable name                              | string                 |
+| ```version```      | version number                                   | string                 |
+| ```created```      | date and (optional) time                         | ISO 8601 format string |
+| ```language```     | language definition for dialogue                 | string                 |
+| ```text-styling``` | references the standard used for text formatting | string                 |
 
 
 
@@ -229,56 +262,39 @@ Both entries are allowed
 "date": "2020-05-25 17:52"
 ```
 
+To avoid interpretation errors when exchanging files between various time zones, time should be generally encoded as [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (or at least indicating the time zone offset). 
 
 
-### comment
 
-Comments can help recognize where a new structure in a serialized file begins or ends. They are not used for any processing. Example of a comment entry:
+### language
+
+Stores the language (language and regional spelling, dialect, or pronunciation) for the entire dialogue as defined in the [Unicode language core specification](http://cldr.unicode.org/core-spec). (Though we do not find Unicode's approach to mixing region and usage very useful, e.g. I still want to speak English and use the [international date format](https://en.wikipedia.org/wiki/ISO_8601) no matter where I am while using the local currency symbol. As a sign of protest you may find the language value "en-EA" as in "English on Earth").
+
+There is no direct support for multiple-language side-by-side text in one dialogue structure, though you can include several dialogues in one data file. One possible implementation is to just create a different dialogue language file and let client handle which one to use for a given user preference.
+
+
+
+### text-styling
+
+This element enables your application to understand embedded text formatting.
+
+For example
 
 ```json
-"nodes": [
-    { "comment": "___node___" }
-]
+"text-styling": "markdown"
 ```
 
+would interpret text between "**" as bold text.
+
+There is no binding styling format required for any specific dialogue file, however when exchanging dialog files between applications, this entry shall allow, at the least, for stripping of formatting tags, when not for converting them to another format supported by a given target application.
 
 
-### sequence
-
-When the order of execution is important, the sequence element may be included, especially because the JSON specification does not enforce any writing or reading sequence for objects of equal hierarchy level:
-
-```json
-"items": [
-  { "text": "Answer 2",
-    "sequence": 2 },
-  { "text": "Answer 1",
-    "sequence": 1 },
-  { "text": "Answer 3",
-    "sequence": 3 }
-]
-```
-
-
-
-
-
-## Dialogue Header
-
-Mandatory header types enumeration:
-
-| key        | enumerator | description                    |
-| ---------- | ---------- | ------------------------------ |
-| ```type``` | dialogue   | the main type of this standard |
-
-
-
-Optional standard header types are currently not implemented in this standard, however you are free to define your own.
 
 
 
 ## Nodes
 
-### Types
+### Node Types
 
 Header types enumeration:
 
@@ -293,7 +309,7 @@ Header types enumeration:
 
 
 
-Optional data
+Optional node data
 
 | key         | description                                                  | type   |
 | ----------- | ------------------------------------------------------------ | ------ |
@@ -303,7 +319,7 @@ Optional data
 
 
 
-### Start Node
+**Start Node**
 
 ```@TODO``` Do we encode some behavior on node level, e.g. *node-init* or exit node or do we require a component for **all** behaviors? Or there a next-node-id in the basic dialogue parameters
 
@@ -316,7 +332,7 @@ Optional data
 
 
 
-### Exit Node
+**Exit Node**
 
 The exit node indicated that it is the last node and traversing the node tree is finished.
 
@@ -328,7 +344,7 @@ The exit node indicated that it is the last node and traversing the node tree is
 
 
 
-### Normal Node
+**Normal Node**
 
 Normal nodes are those that have their directives encoded in components and do not require additional special node-level handling in the application.
 
@@ -342,10 +358,7 @@ This can be for example a node that is text only. It is up to the application to
 
 
 
-
-
-
-### Random Node
+**Random Node**
 
 The random node is used to make random decisions, for example on the next node to select. The presence of this node and several next-node-id items will indicate to the code that a random selection is in place
 
@@ -362,6 +375,21 @@ The random node is used to make random decisions, for example on the next node t
     }
   ]
 }
+```
+
+
+
+### actor
+
+```json
+{ "actor": "Jenek" }
+```
+
+This element can be used to show who is speaking a line.
+
+```
+[Narrator] You find yourself in a bar talking with Jenek.
+[Jenek] Ahh, that's right. You're here about the jump drive!
 ```
 
 
@@ -399,26 +427,41 @@ Component *type*s of the dialogue system
 
 
 
-
-
-
-
 Optional data
 
-| key                | description                                                  | type    |
-| ------------------ | ------------------------------------------------------------ | ------- |
-| ```sequence```     | sequence of the component to enforce e.g. text > selections > text | integer |
-| ```media-type```   | [media type](https://en.wikipedia.org/wiki/Media_type) info  | string  |
-| ```media```        | link to media file                                           | string  |
-| ```text```         | direct text entry                                            | string  |
-| ```items```        | a list of items for the component execution                  | string  |
-| ```next-node-id``` | id of the next node to go                                    | string  |
+| key                | description                                                  | type             |
+| ------------------ | ------------------------------------------------------------ | ---------------- |
+| ```sequence```     | sequence of the component to enforce e.g. text > selections > text | unsigned integer |
+| ```media-type```   | [media type](https://en.wikipedia.org/wiki/Media_type) info  | string           |
+| ```media```        | link to media file                                           | string           |
+| ```text```         | direct text entry                                            | string           |
+| ```items```        | a list of items for the component execution                  | string           |
+| ```next-node-id``` | id of the next node to go                                    | string           |
 
 
 
 ### text
 
 Text can contain escaped double quotes ```\"text\"```. It can also contain line breaks "\n".
+
+
+
+### sequence
+
+When the order of execution is important, the sequence element may be included, especially because the JSON specification does not enforce any writing or reading sequence for objects of equal hierarchy level:
+
+```json
+"items": [
+  { "text": "Answer 2",
+    "sequence": 2 },
+  { "text": "Answer 1",
+    "sequence": 1 },
+  { "text": "Answer 3",
+    "sequence": 3 }
+]
+```
+
+
 
 
 
@@ -566,6 +609,22 @@ This document is published under the [GNU Free Documentation License (FDL)](http
 ## Appendix: Standard Development History
 
 In this appendix chapter we are documenting some of the design decisions made in the past so that it would be easier to check back in case of a revisit of a given topic.
+
+
+
+### Spelling Out Structure Names
+
+We have decided to spell out the structure name in the type. Example for component-random:
+
+```json
+"components": [
+  { "type": "component-random" }
+]
+```
+
+We could have adopted the shorter type "random" instead of "component-random" but we decided for the latter with the objective to enhance readability of the source and thus reduce writing errors.
+
+
 
 
 ### Starting Node
