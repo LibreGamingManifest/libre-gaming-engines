@@ -1,0 +1,23 @@
+#!/bin/sh
+#====================================
+# @file   : clean
+# @version: 2020-03-22
+# @created: 2020-02-01
+# @purpose: will clean build and compiled doc directories
+# @usage  : sh/clean
+# @param  : build files are in ./build
+# @param  : doc output files are in ./doc/html,latex,pdf
+#====================================
+
+
+#----------------------------------
+# main
+#----------------------------------
+
+# clean up
+rm -r build
+rm -r doc/html
+rm -r doc/latex
+rm -r doc/pdf
+rm -r bin
+#rm galaxy.json
