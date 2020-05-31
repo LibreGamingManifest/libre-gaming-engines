@@ -24,6 +24,12 @@
 # version history
 =====================================
 
+v0.202005.32
+
+- added dialogue demo 4
+- lib: added parameter substitution
+- lib: added dialogue.ifid
+
 
 
 v0.202005.31

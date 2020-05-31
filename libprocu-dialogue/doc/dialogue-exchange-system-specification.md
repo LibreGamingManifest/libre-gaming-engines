@@ -1,6 +1,6 @@
 ```markdown
 # @file   : dialogue-exchange-system-specification.md
-# @version: 2020-05-30
+# @version: 2020-05-31
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: specification document for libprocu-dialogue exchange system
@@ -18,7 +18,7 @@
 
 # Standard Dialogue Exchange System
 
-Standard version: 1.202005.31
+Standard version: 1.202005.32
 
 Author(s): pyramid
 
@@ -212,15 +212,18 @@ Mandatory header type is
 
 **Optional** generic entries that may be present in the header:
 
-| key                | description                                      | type                   |
-| ------------------ | ------------------------------------------------ | ---------------------- |
-| ```type```         | dialogue - the main type of this standard        | string                 |
-| ```name```         | human readable name                              | string                 |
-| ```version```      | version number                                   | string                 |
-| ```created```      | date and (optional) time                         | ISO 8601 format string |
-| ```author```       | author or authors of the data                    | string                 |
-| ```language```     | language definition for dialogue                 | string                 |
-| ```text-styling``` | references the standard used for text formatting | string                 |
+| key                 | description                                                  | type                   |
+| ------------------- | ------------------------------------------------------------ | ---------------------- |
+| ```type```          | dialogue - the main type of this standard                    | string                 |
+| ```name```          | human readable name                                          | string                 |
+| ```version```       | version number                                               | string                 |
+| ```created```       | date and (optional) time                                     | ISO 8601 format string |
+| ```author```        | author or authors of the data                                | string                 |
+| ```language```      | language definition for dialogue                             | string                 |
+| ```text-styling```  | references the standard used for text formatting             | string                 |
+| ```ifid```          | [Interactive Fiction IDentifier](https://ifdb.tads.org/help-ifid) | string                 |
+| ```variable-init``` | variable parsing prefix                                      | string                 |
+| ```variable-end```  | variable parsing suffix                                      | string                 |
 
 
 
@@ -547,6 +550,35 @@ May be used in the following way to enhance immersion:
 ```
 
 
+
+
+
+## Variables
+
+Substitution variables can be inserted directly into text
+
+```json
+"text": "Good day to you, $(playerName)?"
+```
+
+
+
+The style of the variable parsing can be determined by the dialogue elements
+
+```json
+"variable-init": "$("
+"variable-end": ")"
+```
+
+As such variables can be given in any style "<<variable>>", or ""[variable]", or "{variable}", ..., as long as the *variable-init* and *variable-end* elements are declared.
+
+Substitution example:
+
+```json
+"text": "You are $(playerName), the mourning $(playerName)?"
+
+[Jenek] You are Deucalion, the mourning Deucalion?
+```
 
 
 

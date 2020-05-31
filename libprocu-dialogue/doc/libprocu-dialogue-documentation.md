@@ -71,7 +71,7 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 # Features
 
-@TODO Features are currently only a collection of ideas and after initial basic development is done, should be separated into standardizes features (have standard documented), supported features (have a library implementation), and feature requests (not yet incorporated into standard and library).
+Features listed separately for standardized features (have standard documented), supported features (have a library implementation), and feature requests (not yet incorporated into standard and library).
 
 
 
@@ -79,8 +79,9 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 - Engine agnostic international [**standard format specification**](https://github.com/LibreGamingManifest/libre-gaming-engines/blob/master/libprocu-dialogue/doc/dialogue-exchange-system-specification.md).
 - Fully **open** source (FDL for specification, GPL for code).
-- A simple one-header C++ **library** (*libprocu-dialogue*)
 - Well-**documented** (specification document, library documentation, source code comments, commented samples).
+- Dialogue source is **self-explanatory** due to use of key-value pairs that carry meaning and content together, though extensive documentation is also available.
+- A simple one-header C++ **library** (*libprocu-dialogue*).
 - **Branched** conversations (next node) with multiple choices (*component-selection*).
 - **Non-linear** conversations, such as looping backwards in the conversation to a previous dialogue node (*next-node-id*).
 - Common node **types**: start (*node-init*), end (*node-exit*), normal connected node (*node*) .
@@ -92,6 +93,8 @@ When writing the code we are trying to avoid high-performant code in favor of un
 - Dialogue **media** file elements (*text*, *image*, *sprite*, *audio*, *speech*, *sound*, *media*).
 - **Multiple** synchronous dialogue media where additional media files can be used to decorate choices and dialogues (e.g. hover image).
 - **Camera** control information (*camera*) can be stored per item.
+- Passing **arguments** to dialogue to create dynamic conversations.
+- Variable definition of parameter **parsing prefix** (*variable-init*) and **suffix** (*variable-end*) to easily adapt to any converted syntax.
 - Library support for release mode and **experimental** mode (via library options, e.g. *LIBDIALOGUE_COUT_ERROR*).
 
 
@@ -131,16 +134,14 @@ Features that are not standardized in the specification (and may not be unless t
 - Custom event and event calls
 - Local and Global variables
 - Variables with scope, either local to a single script or global between all scripts
-- Dynamic conversations (based on input parameters)
-- Complex conditions or logic without scripting
 - Conditions (variable, or named).
+- Complex conditions or logic without scripting
 - Allows conditional flow in conversations, giving you the power to script functions that determine the availability of responses
 - Implements a way for NPCs to have different responses based on  different conditions, allowing them to greet you differently or say different things
 - Has a system to dynamically replace text in the dialogue by  utilizing a table of Dynamic Text Functions (which you can write your own  functions for). NPCs can greet you by name.
 - Allows NPC phrases to be chained into one another for such a purpose as a “next” button like in Zelda where text is split between multiple  boxes
 - Possibility to convert from other formats (Twine, Ink, DlgSystem, ...)
 - Inventory app to list actors, dialogues, moods as a script for voice acting
-
 - Comes with a dialogue node editor
 
 
