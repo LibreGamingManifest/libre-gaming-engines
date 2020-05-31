@@ -1,6 +1,6 @@
 ```markdown
 # @file   : libprocu-dialogue-documentation.md
-# @version: 2020-05-29
+# @version: 2020-05-31
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: documentation for libprocu-dialogue
@@ -23,13 +23,15 @@
 -------------------------------------
 
 - [Introduction](#introduction)
-- [Usage and Quick Guide](#Usage-and-Quick-Guide)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Examples](#Examples)
 - [Appendices](#appendices)
 
 
 
 **Introduction**
--------------------------------------
+=====================================
 
 LibProcU stands for **Proc**edural **U**niverse **Lib**rary.
 
@@ -53,6 +55,8 @@ There was no standard and implementation that was open source, provided librarie
 
 Further, it should allow to contain not only implementation or usage specific information but also additional information like the position on screen for the editing tools or guidance on which mood to apply to a given conversation when delivering voice-over and acting, what are the conditions triggering the conversation, variables that allow the dialogue to reflect previous player choices, and many more features reflecting the requirements of modern gameplay.
 
+
+
 @TODO Such a standard format has yet to be established. Should you have knowledge of such a format, please do not hesitate to contact the author.
 
 
@@ -65,7 +69,7 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 
 
-## Features
+# Features
 
 @TODO Features are currently only a collection of ideas and after initial basic development is done, should be separated into standardizes features (have standard documented), supported features (have a library implementation), and feature requests (not yet incorporated into standard and library).
 
@@ -73,72 +77,75 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 ### Implemented Features
 
-- Engine agnostic international [standard format specification](https://github.com/LibreGamingManifest/libre-gaming-engines/blob/master/libprocu-dialogue/doc/dialogue-exchange-system-specification.md).
-- Fully open source (FDL for specification, GPL for code).
-- A simple one-header C++ library (*libprocu-dialogue*)
-- Well-documented (specification document, library documentation, source code comments, commented samples).
-- Branched conversations (next node) with multiple choices (*component-selection*).
-- Non-linear conversations, such as looping backwards in the conversation to a previous dialogue node (*next-node-id*).
-- Common node types: start (*node-init*), end (*node-exit*), normal connected node (*node*) .
-- Associate nodes to actors (with the *actor* element). As such multiple actor conversations are supported in one dialogue structure.
-- Random components (*component-random*) that will randomly select the next node.
-- Library support for release mode and experimental mode (via library options, e.g. LIBDIALOGUE_COUT_ERROR).
+- Engine agnostic international [**standard format specification**](https://github.com/LibreGamingManifest/libre-gaming-engines/blob/master/libprocu-dialogue/doc/dialogue-exchange-system-specification.md).
+- Fully **open** source (FDL for specification, GPL for code).
+- A simple one-header C++ **library** (*libprocu-dialogue*)
+- Well-**documented** (specification document, library documentation, source code comments, commented samples).
+- **Branched** conversations (next node) with multiple choices (*component-selection*).
+- **Non-linear** conversations, such as looping backwards in the conversation to a previous dialogue node (*next-node-id*).
+- Common node **types**: start (*node-init*), end (*node-exit*), normal connected node (*node*) .
+- Associate nodes to **actors** (with the *actor* element). As such multiple actor conversations are supported in one dialogue structure.
+- **Random** components (*component-random*) that will randomly select the next node.
+- Selection **hints** (*hint*) to show different (shortened) text/media than the full one in the reply.
+- Media **decorators** (*decorator*) to show the mood or influence of the choice when selected.
+- ***Mood*** hints for voice acting or visual indication of such either through the user interface, heads-up display, or character animation.
+- Dialogue **media** file elements (*text*, *image*, *sprite*, *audio*, *speech*, *sound*, *media*).
+- **Multiple** synchronous dialogue media where additional media files can be used to decorate choices and dialogues (e.g. hover image).
+- **Camera** control information (*camera*) can be stored per item.
+- Library support for release mode and **experimental** mode (via library options, e.g. *LIBDIALOGUE_COUT_ERROR*).
 
 
 
-### Features Specified in the Standard But Not Yet Implemented
+### Specified Features
 
-- Localization support (with the locale element).
-- Text styling format definition to allow your application extract and apply styles.
+Features specified in the standard but not yet implemented in the *libprocu* library. Those features are in addition to the ones that are  listed above as implemented, because all implemented features are specified.
+
+- **Localization** support (with the *language* element).
+- Text **styling** (*text-style*) format definition to allow your application extract and apply styles, for example text color, text formatting, any other styling required by the implementation.
+- Node **groups** to create for example question groups (*group*).
+- Nodes can **execute** (*execute*) arbitrary code, such as giving you an item or ability or performing any other action.
+- Dialogue nodes can **store** additional arbitrary *data* allowing you to customize behavior.
+- Nodes can define **actions** (*action*) to be performed with the node. Allows defining on-start, on-finish node actions.
+- **Conditions** (*condition*) are stored in nodes and can be checked by the game engine code.
+- Nodes hold information on ***events*** and ***notifications*** that may be sent during node processing.
+- **Script** component to define script functionality.
+- Animation decorators (*animate*, *emote*, *express*).
 
 
 
-### Features That Are Not Standardized and Should Be Implemented In Client Applications
+### Client Application Owned Features
 
-- 
+Features that are not standardized in the specification (and may not be unless there is a good reason to do so) and should be rather implemented in client applications.
+
+- Possibility for **breaking off** an unfinished conversation must be implemented by the game engine client as the library does not implement dialogue flow control.
+- Dialogues should not store **rewards** or **achievements** but should be able to send out notifications or events (specified with the *event* and *notification* elements) so that the game engine can use those notifications to perform reward or achievement related functions.
+- Neither the specification nor the code library is concerned with the presentation layer as this one will always be very specific to the game you are implementing, so your application will have to customize the **look** and **interaction** behavior of the dialogue however you like on the game client side.
 
 
 
 ### Feature Requests
 
-- 
-- Selection hints
-- Node groups
-- Questions and question groups
+- Tasks (show text, wait for answer, move camera, close dialog, next node)
+- Tag to allow for forcing waiting/pausing during dialogue
+- Triggers
+- Custom event and event calls
+- Local and Global variables
+- Variables with scope, either local to a single script or global between all scripts
 - Dynamic conversations (based on input parameters)
 - Complex conditions or logic without scripting
-- Text color, formatting, styling per types or individual nodes
-- Media decorators
-- Animation decorators (tasks, emotes, expressions)
-- Hover image, text, audio, any media
-- Triggers
-- Conditions (variable, or named)
-- Multiple synchronous dialogue media (text, image, audio, camera)
-- Behavior trees
-- Mood hints (e.g. for voice acting)
-- Dialogue media file arguments
-- Tasks (show text, wait for answer, move camera, close dialog, next node)
-- Local and Global variables
-- Custom event and event call nodes
-- Retargettable Dialogue Graphs
-- Camera control information
-- Some sort of OnStart, OnFinish optional action
--  Tag to allow for forcing waiting/pausing during dialogue
--  **Variables with scope**, either local to a single script or global between all scripts
+- Conditions (variable, or named).
 - Allows conditional flow in conversations, giving you the power to script functions that determine the availability of responses
-- Implements a way for NPCs to have different responses based on  different conditions, allowing them to greet you differently or say  different things
-- Has a system to dynamically replace text in the dialogue by  utilizing a table of DynamicTextFunctions (which you can write your own  functions for). Now NPCs can greet you by name!
-- Each dialogue node can execute arbitrary code upon being  encountered, such as giving you a tool or powerup, or teleporting you  somewhere else for a fee
-- Each dialogue node can store arbitrary data which is passed into  DynamicTextFunctions, actions, and conditions, allowing you to customize behavior
-- Has an abstract interface, allowing you to customize the look and behavior of the client-side however you like
-- Comes with a default interface, redesigning a classic Roblox look and allowing you to jump start projects
+- Implements a way for NPCs to have different responses based on  different conditions, allowing them to greet you differently or say different things
+- Has a system to dynamically replace text in the dialogue by  utilizing a table of Dynamic Text Functions (which you can write your own  functions for). NPCs can greet you by name.
 - Allows NPC phrases to be chained into one another for such a purpose as a “next” button like in Zelda where text is split between multiple  boxes
-- Possibility for breaking off an unfinished conversation (client?)
 - Possibility to convert from other formats (Twine, Ink, DlgSystem, ...)
+- Inventory app to list actors, dialogues, moods as a script for voice acting
+
+- Comes with a dialogue node editor
 
 
 
-## Configuration
+# Configuration
 
 
 
@@ -152,7 +159,7 @@ When writing the code we are trying to avoid high-performant code in favor of un
 
 
 
-## Examples
+# Examples
 
 A simple branching and recursive dialogue can be implemented using just a few lines of code:
 

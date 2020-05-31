@@ -18,7 +18,7 @@
 
 # Standard Dialogue Exchange System
 
-Standard version: 1.202005.28
+Standard version: 1.202005.31
 
 Author(s): pyramid
 
@@ -218,6 +218,7 @@ Mandatory header type is
 | ```name```         | human readable name                              | string                 |
 | ```version```      | version number                                   | string                 |
 | ```created```      | date and (optional) time                         | ISO 8601 format string |
+| ```author```       | author or authors of the data                    | string                 |
 | ```language```     | language definition for dialogue                 | string                 |
 | ```text-styling``` | references the standard used for text formatting | string                 |
 
@@ -266,6 +267,20 @@ To avoid interpretation errors when exchanging files between various time zones,
 
 
 
+### author
+
+```json
+"author": "pyramid"
+```
+
+or
+
+```json
+"author": "pyramid, JackS"
+```
+
+
+
 ### language
 
 Stores the language (language and regional spelling, dialect, or pronunciation) for the entire dialogue as defined in the [Unicode language core specification](http://cldr.unicode.org/core-spec). (Though we do not find Unicode's approach to mixing region and usage very useful, e.g. I still want to speak English and use the [international date format](https://en.wikipedia.org/wiki/ISO_8601) no matter where I am while using the local currency symbol. As a sign of protest you may find the language value "en-EA" as in "English on Earth").
@@ -285,6 +300,14 @@ For example
 ```
 
 would interpret text between "**" as bold text.
+
+The text-styling element is defined globally per dialogue, and the formatting information is embedded into the text elements.
+
+```json
+"text": "It was **his** decision and no one elses."
+```
+
+
 
 There is no binding styling format required for any specific dialogue file, however when exchanging dialog files between applications, this entry shall allow, at the least, for stripping of formatting tags, when not for converting them to another format supported by a given target application.
 
@@ -308,14 +331,18 @@ Header types enumeration:
 
 
 
+**Optional** node data
 
-Optional node data
-
-| key         | description                                                  | type   |
-| ----------- | ------------------------------------------------------------ | ------ |
-| ```actor``` | entity name for the actor who performs the actions of this node, player or non-player. | string |
-|             |                                                              |        |
-|             |                                                              |        |
+| key                | description                                                  | type   |
+| ------------------ | ------------------------------------------------------------ | ------ |
+| ```actor```        | entity name for the actor who performs the actions of this node, player or non-player. | string |
+| ```group```        | for grouping of behavior                                     | string |
+| ```execute```      | reference to code to be executed                             | string |
+| ```data```         | arbitrary payload to customize behavior                      | string |
+| ```action```       | define actions to be executed                                | string |
+| ```condition```    | node conditions                                              | string |
+| ```event```        | event to be sent                                             | string |
+| ```notification``` | notification to be sent                                      | string |
 
 
 
@@ -353,27 +380,6 @@ This can be for example a node that is text only. It is up to the application to
 ```json
 { "id": "10",
   "type": "node"
-}
-```
-
-
-
-**Random Node**
-
-The random node is used to make random decisions, for example on the next node to select. The presence of this node and several next-node-id items will indicate to the code that a random selection is in place
-
-```json
-{ "id": "10",
-  "type": "node-random",
-  "components": [
-    { "type": "component-selection",
-      "items": [
-        { "next-node-id": "11" },
-        { "next-node-id": "13" },
-        { "next-node-id": "56" }
-      ]
-    }
-  ]
 }
 ```
 
@@ -421,9 +427,9 @@ Component *type*s of the dialogue system
 | component type enumerator | description             |
 | ------------------------- | ----------------------- |
 | component-text            | text only               |
-| component-selection       |                         |
+| component-selection       | stores selection items  |
 | component-next            | stores the next node id |
-| component-reward          |                         |
+| component-script          | stores script items     |
 
 
 
@@ -440,13 +446,13 @@ Optional data
 
 
 
-### text
+### component-text
 
 Text can contain escaped double quotes ```\"text\"```. It can also contain line breaks "\n".
 
 
 
-### sequence
+### component-sequence
 
 When the order of execution is important, the sequence element may be included, especially because the JSON specification does not enforce any writing or reading sequence for objects of equal hierarchy level:
 
@@ -463,11 +469,86 @@ When the order of execution is important, the sequence element may be included, 
 
 
 
+### **component-random**
+
+The random node is used to make random decisions, for example on the next node to select. The presence of this node and several next-node-id items will indicate to the code that a random selection is in place
+
+```json
+{ "type": "component-random",
+  "items": [
+    { "next-node-id": "11" },
+    { "next-node-id": "13" },
+    { "next-node-id": "56" }
+  ]
+}
+```
+
 
 
 
 
 ## Items
+
+Items are mostly used to list several structures (lists) in components. On e notable usage is to include selection choices with branching to selection components.
+
+Items are composed of **optional**  elements:
+
+| key                | description                                 | type   |
+| ------------------ | ------------------------------------------- | ------ |
+| ```sequence```     | sort sequence of this item                  | uint   |
+| ```text```         | text entry                                  | string |
+| ```next-node-id``` | id of the next node to go                   | string |
+| ```speech```       | speech file to accompany the text           | string |
+| ```image```        | image file                                  | string |
+| ```sprite```       | sprite file                                 | string |
+| ```media```        | generic media entry                         | string |
+| ```sound```        | additional sound file to play               | string |
+| ```audio```        | additional audio file to play               | string |
+| ```hint```         | hint to show before choice is made          | string |
+| ```decorator```    | decorator to show for choices               | string |
+| ```mood```         | mood hint for visualization or voice acting | string |
+| ```camera```       | camera motion hints                         | string |
+| ```animate```      | actor animation commands                    | string |
+| ```emote```        | actor emote commands                        | string |
+| ```express```      | actor expression commands                   | string |
+
+
+
+### media
+
+Any media file required to accompany the item. Can be audio, image, sprite, whatever. Can be used for hover image, text, audio, any media.
+
+
+
+### speech
+
+Specific entry for speech file to accompany the text.
+
+
+
+### sound
+
+Specific entry for a sound file to accompany the selection (before, during, or after). Can be used for hover sound, on click sound, selection completed sound, or any other function depending on your application implementation.
+
+
+
+### audio
+
+Specific entry for an audio file to accompany the selection (before, during, or after). Can be used to accompany dialogue with background music or environment sounds.
+
+
+
+### mood
+
+May be used in the following way to enhance immersion:
+
+```
+[Deucalion] (decisive) That's not what I'm here about.
+```
+
+
+
+
 
 
 
@@ -609,6 +690,71 @@ This document is published under the [GNU Free Documentation License (FDL)](http
 ## Appendix: Standard Development History
 
 In this appendix chapter we are documenting some of the design decisions made in the past so that it would be easier to check back in case of a revisit of a given topic.
+
+
+
+### Repetition Of Elements
+
+One thing that somewhat bothers me is the repetition of elements in components and items.
+
+On the one hand we want to make it the JSON data as easily readable as possible. So we allow:
+
+```json
+{ "type": "component-text",
+  "text": "Ahh, that's right.",
+  "next-node-id": "3" }
+```
+
+
+
+But for some components, we require text to be part of *items*, which are a sub-element of component:
+
+```json
+{ "type": "component-selection",
+  "items": [
+    { "text": "Yeah, I'm interested.",
+      "next-node-id": "4" },
+    { "text": "Depends ...",
+      "next-node-id": "5" }
+  ] }
+```
+
+
+
+This means that we either define *text* to be an element of *component* and also an element of *item* (our implementation choice):
+
+```cpp
+struct DialogueComponent {
+  std::optional<std::string> text;
+  std::optional<std::string> nextNodeId;
+  std::optional<std::vector<DialogueItem>> items;
+};
+
+struct DialogueItem {
+  std::optional<std::string> text;
+  std::optional<std::string> nextNodeId;
+};
+```
+
+This is actually cheap, but needs the duplicated definitions.
+
+
+
+Or we would only implement those duplicated elements in the items, which would lead to less readable code especially for short texts (not our preference):
+
+```json
+{ "type": "component-text",
+  "items": [
+    "text": "Ahh, that's right.",
+    "next-node-id": "3" }
+  ] }
+```
+
+This would also mean additional hierarchy processing in the dialogue code.
+
+
+
+There may be a way of combining the best of both worlds (avoiding additional hierarchy for simple entries but also reusing elements in various hierarchies) though we have not found one yet.
 
 
 

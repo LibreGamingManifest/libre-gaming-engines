@@ -1,7 +1,7 @@
 ```markdown
 #====================================
 # @file   : libprocu-dialogue/CHANGES.md
-# @version: 2020-05-29
+# @version: 2020-05-31
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: version documentation for libprocu-dialogue
@@ -23,6 +23,22 @@
 
 # version history
 =====================================
+
+
+
+v0.202005.31
+
+- added dialogue demo 3
+- lib: added script to component
+- lib: added display decorator if available
+- lib: added display hints if available
+- lib: added animate, emote, express
+- lib: added group, execute, data, action, condition, event, notification to node
+- lib: added *media*, *speech*, *sound*, *audio* to item
+- lib: added decorator to item
+- lib: added hint to item
+
+
 
 v0.202005.30
 
