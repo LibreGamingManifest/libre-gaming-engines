@@ -1,6 +1,6 @@
 ```markdown
 # @file   : dialogue-exchange-system-specification.md
-# @version: 2020-05-31
+# @version: 2020-06-03
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: specification document for libprocu-dialogue exchange system
@@ -60,6 +60,76 @@ Supported value formats are.
 - string
 - integer
 - boolean
+
+
+
+## Features
+
+Features are listed separately for standardized features (have standard documented), supported features (have a [libprocu-dialogue](https://github.com/LibreGamingManifest/libre-gaming-engines/tree/master/libprocu-dialogue) library implementation), and feature requests (not yet incorporated into standard and library).
+
+
+
+### Implemented Features
+
+- Engine agnostic international [**Standard Dialogue Exchange System Specification**](https://github.com/LibreGamingManifest/libre-gaming-engines/blob/master/libprocu-dialogue/doc/dialogue-exchange-system-specification.md).
+- Fully **open** source (FDL for specification, GPL for code).
+- Well-**documented** (specification document, library documentation, source code comments, commented samples).
+- Dialogue source is **self-explanatory** due to use of key-value pairs that carry meaning and content together, though extensive documentation is also available.
+- A simple one-header C++ **library** (*libprocu-dialogue*).
+- **Branched** conversations (next node) with multiple choices (*component-selection*).
+- **Non-linear** conversations, such as looping backwards in the conversation to a previous dialogue node (*next-node-id*).
+- Common node **types**: start (*node-init*), end (*node-exit*), normal connected node (*node*) .
+- Associate nodes to **actors** (with the *actor* element). As such multiple actor conversations are supported in one dialogue structure.
+- **Random** components (*component-random*) that will randomly select the next node.
+- **Chaining** of long phrases one after another.
+- Selection **hints** (*hint*) to show different (shortened) text/media than the full one in the reply.
+- Media **decorators** (*decorator*) to show the mood or influence of the choice when selected.
+- ***Mood*** hints for voice acting or visual indication of such either through the user interface, heads-up display, or character animation.
+- Dialogue **media** file elements (*text*, *image*, *sprite*, *audio*, *speech*, *sound*, *media*).
+- **Multiple** synchronous dialogue media where additional media files can be used to decorate choices and dialogues (e.g. hover image).
+- **Camera** control information (*camera*) can be stored per item.
+- Passing **arguments** to dialogue to create dynamic conversations like an non-player character greeting the player by name.
+- Variable definition of **parameter** **parsing prefix** (*variable-init*) and **suffix** (*variable-end*) to easily adapt to any converted syntax.
+- Library support for release mode and **experimental** mode (via library options, e.g. *LIBDIALOGUE_COUT_ERROR*).
+
+
+
+### Specified Features
+
+Features specified in the standard but not yet implemented in the *libprocu* library. Those features are in addition to the ones that are  listed above as implemented, because all implemented features are specified.
+
+- **Localization** support (with the *language* element).
+- Text **styling** (*text-style*) format definition to allow your application extract and apply styles, for example text color, text formatting, any other styling required by the implementation.
+- Node **groups** to create for example question groups (*group*).
+- Nodes can **execute** (*execute*) arbitrary code, such as giving you an item or ability or performing any other action.
+- Dialogue nodes can **store** additional arbitrary *data* allowing you to customize behavior.
+- Nodes can define **actions** (*action*) to be performed with the node. Allows defining on-start, on-finish node actions.
+- **Animation** decorators (*animate*, *emote*, *express*).
+- **Conditions** (*condition*) are stored in nodes and can be checked by the game engine code.
+- Nodes hold information on ***events*** and ***notifications*** that may be sent during node processing.
+- **Script** component to define script functionality. Scripting functions can be used for example to determine the availability of responses.
+- Scripted conditions (variable, named, scripted) for conditional flows in conversations. Allows to implements a way for NPCs to have different responses based on  different conditions, allowing them to greet you differently or say different things.
+
+
+
+### Client Application Owned Features
+
+Features that are not standardized in the specification (and may not be unless there is a good reason to do so) and should be rather implemented in client applications.
+
+- Possibility for **breaking off** an unfinished conversation must be implemented by the game engine client as the library does not implement dialogue flow control.
+- Dialogues should not store **rewards** or **achievements** but should be able to send out notifications or events (specified with the *event* and *notification* elements) so that the game engine can use those notifications to perform reward or achievement related functions.
+- Neither the specification nor the code library is concerned with the presentation layer as this one will always be very specific to the game you are implementing, so your application will have to customize the **look** and **interaction** behavior of the dialogue however you like on the game client side.
+- **Text splitting** between multiple boxes in case a long text is not fitting the given dialogue frame shall be performed by the game client application as the library does not provide a presentation layer functionality. The standard however supports multiple text based items or components that can be read out together for each node and processed accordingly for correct display and stepping forward through text.
+
+
+
+### Feature Requests
+
+- Custom callbacks, events, or notifications (example is to trigger achievements).
+- Variables with scope, either local to a single script or global between all scripts (e.g. if node has been visited 2 times give a different response).
+- Possibility to convert from other formats (Twine, Ink, DlgSystem, ...).
+- Inventory application to list actors, dialogues, moods as a script for voice acting.
+- A dialogue node editor.
 
 
 
@@ -224,6 +294,7 @@ Mandatory header type is
 | ```ifid```          | [Interactive Fiction IDentifier](https://ifdb.tads.org/help-ifid) | string                 |
 | ```variable-init``` | variable parsing prefix                                      | string                 |
 | ```variable-end```  | variable parsing suffix                                      | string                 |
+| script-language     |                                                              |                        |
 
 
 
@@ -313,6 +384,16 @@ The text-styling element is defined globally per dialogue, and the formatting in
 
 
 There is no binding styling format required for any specific dialogue file, however when exchanging dialog files between applications, this entry shall allow, at the least, for stripping of formatting tags, when not for converting them to another format supported by a given target application.
+
+
+
+### script-language
+
+The game engine usually supports some specific scripting language. In case portability between systems is needed or an engine supports more than one scripting language, the "[script-language](#script-language)" dialogue element may be set to explicitly specify the embedded script language.
+
+```json
+"script-language": "lua"
+```
 
 
 
@@ -446,6 +527,7 @@ Optional data
 | ```text```         | direct text entry                                            | string           |
 | ```items```        | a list of items for the component execution                  | string           |
 | ```next-node-id``` | id of the next node to go                                    | string           |
+| ```script```       | link or embedded script                                      | string           |
 
 
 
@@ -485,6 +567,34 @@ The random node is used to make random decisions, for example on the next node t
   ]
 }
 ```
+
+
+
+### component-script
+
+
+
+The *script* element of this component defines either of both:
+
+- embedded script
+- link to a script file
+
+
+
+```json
+{ "type": "component-script"
+  { "script": "int i=5; print(i);" },
+  { "script": "scripts/helloworld.script" }
+}
+```
+
+
+
+The game engine usually supports some specific scripting language. In case portability between systems is needed or an engine supports more than one scripting language, the "[script-language](#script-language)" dialogue element may be set to explicitly specify the embedded script language.
+
+
+
+
 
 
 

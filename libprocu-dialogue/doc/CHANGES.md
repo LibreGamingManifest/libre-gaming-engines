@@ -1,7 +1,7 @@
 ```markdown
 #====================================
 # @file   : libprocu-dialogue/CHANGES.md
-# @version: 2020-05-31
+# @version: 2020-06-03
 # @created: 2020-05-23
 # @author : pyramid
 # @purpose: version documentation for libprocu-dialogue
@@ -23,6 +23,16 @@
 
 # version history
 =====================================
+
+v0.202006.03
+
+- doxy: added sh/doxy to create API document
+- dialogue: backported using execComponentText instead of execComponentTextActor in demos 2 and 3 
+
+- lib: archived deprecated execComponentTextActor
+- lib: fixed execComponentText for empty substitution
+
+
 
 v0.202005.32
 

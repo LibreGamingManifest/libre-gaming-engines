@@ -9,7 +9,7 @@
 
 
 #include <string> // standard library
-std::string VERSION = "0.202005.31";
+std::string VERSION = "0.202006.03";
 
 
 //-----------------------------------
@@ -195,9 +195,9 @@ void mainLoopDemo2() {
 
       // [[new]] show actor if available
       if(currNode.actor) {
-        execComponentTextActor(obj, currNode.actor.value());
+        execComponentText(obj, currNode.actor.value());
       } else {
-        execComponentText(obj);
+        execComponentText(obj, "");
       }
 
       // process the text selector
@@ -296,11 +296,10 @@ void mainLoopDemo3() {
     for (auto &obj : currNode.components) {
 
       // show actor if available
-      // but shorter implementation than in demo 2
       if(currNode.actor) {
-        execComponentTextActor(obj, currNode.actor.value());
+        execComponentText(obj, currNode.actor.value());
       } else {
-        execComponentText(obj);
+        execComponentText(obj, "");
       }
 
       // process the text selector
@@ -518,6 +517,9 @@ int main(int argc, char **argv) {
       cout << "  -h --help         : show this help\n";
       cout << "  -d --demo uint    : run defined demo\n";
       cout << "          --demo 1  : simple branching dialogue with choices\n";
+      cout << "          --demo 2  : random node (last of choice 3), show actor, repeat selected text\n";
+      cout << "          --demo 3  : display hints and decorators\n";
+      cout << "          --demo 4  : variable substitution to greet player (you are Deucalion)\n";
       return 0;
     } else
     if (args[i] == "-f" or args[i] == "--file") {

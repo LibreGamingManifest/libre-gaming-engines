@@ -1,6 +1,6 @@
 //===================================
 // @file   : libprocu-dialogue.hpp
-// @version: 2020-05-31
+// @version: 2020-06-03
 // @created: 2020-05-23
 // @author : pyramid
 // @brief  : library for player dialogue
@@ -217,6 +217,7 @@ struct Dialogue {
   std::optional<std::string> ifid;
   std::optional<std::string> variableInit;
   std::optional<std::string> variableEnd;
+  std::optional<std::string> scriptLanguage;
 };
 
 struct Dialogues {
@@ -542,8 +543,9 @@ void execComponentText(const DialogueComponent& obj, const std::string actorName
         replaced = replaceString(replaced, search, replace);
       }
       cout << replaced << endl;
+    } else {
+      cout << obj.text.value() << endl;
     }
-    //cout << obj.text.value() << endl;
 
 }
 
@@ -563,7 +565,8 @@ void execComponentText(const DialogueComponent& obj) {
  * @brief Executes component.
  * @param obj component reference
  */
-[[deprecated("replaced by execComponentText function above with use of optional parameters.")]]
+/* archived in version 0.202006.03
+[[deprecated("replaced by execComponentText function with use of optional parameters.")]]
 void execComponentTextActor(const DialogueComponent& obj, const std::string actor="") {
     // check for optional entry
     if(obj.text) {
@@ -573,6 +576,7 @@ void execComponentTextActor(const DialogueComponent& obj, const std::string acto
       cout << obj.text.value() << endl;
     }
 }
+*/
 
 /**
  * @brief Executes component.
@@ -745,6 +749,7 @@ void from_json(const json& j, procu::Dialogue &obj) {
   if (j.contains("ifid")) { obj.ifid = j["ifid"]; };
   if (j.contains("variable-init")) { obj.variableInit = j["variable-init"]; };
   if (j.contains("variable-end")) { obj.variableEnd = j["variable-end"]; };
+  if (j.contains("script-language")) { obj.scriptLanguage = j["script-language"]; };
 }
 
 

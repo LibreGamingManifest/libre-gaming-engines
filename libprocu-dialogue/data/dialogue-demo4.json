@@ -1,0 +1,184 @@
+{ "dialogues": [
+    { "comment": "This is an examaple dialogue exchange file",
+      "type": "dialogue",
+      "id": "0",
+      "name": "Dialogue Exchange System Demo",
+      "version": "0.202005.32",
+      "created": "2020-05-31",
+      "author": "pyramid",
+      "language": "en-EA",
+      "text-styling": "bash",
+      "variable-init": "$(",
+      "variable-end": ")",
+
+      "nodes": [
+
+        { "comment": "___node___",
+          "id": "1",
+          "type": "node-init",
+          "components": [
+            { "type": "component-text",
+              "text": "*** Vega Strike - Upon The Coldest Sea ***",
+              "next-node-id": "9" }
+          ]
+        },
+
+        { "id": "9",
+          "type": "node",
+          "actor": "Narrator",
+          "group": "intro-group",
+          "components": [
+            { "type": "component-text",
+              "text": "The Aera have invaded the Union of Dispossessed Settlers seeking to carve a path through human space to the coreward regions of the jump network." },
+            { "type": "component-text",
+              "text": "You are Deucalion, a human raised by the Klk’k on Ktah, who just got his ship repaired after an emergency landing on Cephid 17 caused by a Luddite attack that cost hist best friend Lauktk his life." },
+            { "type": "component-text",
+              "text": "You find yourself in the bar on the orbital station above Cephid 17 talking with Jenek, a ship dealer.",
+              "next-node-id": "10" }
+          ]
+        },
+
+        { "id": "10",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-text",
+              "text": "You are $(playerName), the mourning $(playerName)?",
+              "next-node-id": "11" }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "11",
+          "type": "node",
+          "actor": "Deucalion",
+          "components": [
+            { "type": "component-selection",
+              "items": [
+                { "text": "Yes, indeed I am.",
+                  "hint": "Yes.",
+                  "next-node-id": "2" },
+                { "text": "I am as much him as you are Jenek.",
+                  "hint": "Why?",
+                  "next-node-id": "2" }
+              ]
+            }
+          ]
+        },
+
+        { "id": "2",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-text",
+              "text": "Ahh, that's right. You're here about the jump drive!",
+              "next-node-id": "3" }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "7",
+          "type": "node",
+          "components": [
+            { "type": "component-text",
+              "text": "So you're interested in the jump drive now?",
+              "next-node-id": "3" }
+          ]
+        },
+
+        { "id": "3",
+          "type": "node",
+          "actor": "Deucalion",
+          "components": [
+            { "type": "component-selection",
+              "items": [
+                { "text": "Yeah, I'm interested.",
+                  "mood": "enthusiastic",
+                  "hint": "Sure.",
+                  "media": "can be a file link",
+                  "speech": "unused in this demo",
+                  "sound": "selection sound for example",
+                  "audio": "bar noise for example",
+                  "decorator": ":-)",
+                  "next-node-id": "4",
+                  "sequence": 2 },
+                { "text": "Depends ...",
+                  "mood": "unconvinced",
+                  "hint": "Hmm.",
+                  "decorator": "-_-",
+                  "next-node-id": "5",
+                  "sequence": 1 },
+                { "text": "That's not what I'm here about.",
+                  "mood": "decisive",
+                  "hint": "Nope.",
+                  "decorator": ":-/",
+                  "next-node-id": "6",
+                  "sequence": 3 }
+              ]
+            }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "4",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-text",
+              "text": "Here you go. It's being installed as we speak.\nWell, what are you waiting for? Go and give it a spin!",
+              "next-node-id": "end" }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "5",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-text",
+              "text": "I see ... Let me give you a very special price.",
+              "next-node-id": "7" }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "6",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-text",
+              "text": "Dammit. I knew there would be no business to be done on this day!",
+              "next-node-id": "8" }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "8",
+          "type": "node",
+          "actor": "Jenek",
+          "components": [
+            { "type": "component-random",
+              "items": [
+                { "text": "Be gone then.", "next-node-id": "end" },
+                { "text": "Maybe next time.", "next-node-id": "end" },
+                { "text": "Count on me if you need further assistance.", "next-node-id": "end" }
+              ]
+            }
+          ]
+        },
+
+        { "comment": "___node___",
+          "id": "end",
+          "type": "node-exit",
+          "components": [
+            { "type": "component-text",
+              "text": "*** THE END ***" },
+            { "type": "component-reward",
+              "reward": "__specify reward here__" }
+          ]
+        }
+      ]
+    }
+
+  ]
+}
